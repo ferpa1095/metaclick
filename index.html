@@ -79,6 +79,7 @@
       gap: 12px;
       margin-bottom: 32px;
     }
+
     .slot {
       width: 60px;
       height: 60px;
@@ -115,6 +116,21 @@
       width: 60px;
       filter: drop-shadow(2px 2px 2px #000);
       z-index: 2;
+    }
+
+    @media (max-width: 768px) {
+      .slots {
+        margin-top: 110px; /* 3 por linha, subtrai o gap */
+        gap: 6px;
+      }
+
+      #sendBtn {
+        position: fixed;
+        bottom: 5rem;
+        left: 50%;
+        transform: translateX(-50%);
+        z-index: 1000; /* garante que fique acima de outros elementos */
+      }
     }
   </style>
 </head>
