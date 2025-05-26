@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Monte sua Operação Ideal - Meta Click</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      background: #70c5ce url('clouds.png') repeat-x bottom;
+      font-family: 'Press Start 2P', cursive;
+      overflow: hidden;
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: space-between;
+    }
+    #ground {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      height: 120px;
+      background: url('ground.png') repeat-x;
+    }
+    header {
+      margin-top: 20px;
+      text-align: center;
+      color: #fff;
+      text-shadow: 2px 2px #000;
+    }
+    header h1 { font-size: 24px; }
+    .play-area {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 20px;
+    }
+    .blocos, .slots {
+      display: flex;
+      gap: 15px;
+    }
+    .bloco, .slot {
+      width: 80px;
+      height: 80px;
+      background: #2b2b2b;
+      border: 2px dashed #555;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: grab;
+      position: relative;
+    }
+    .bloco img {
+      max-width: 64px;
+      max-height: 64px;
+    }
+    .slot.filled {
+      border: 2px solid #fbc531;
+      background: #444;
+    }
+    .slot::after {
+      content: attr(data-index) 'º';
+      position: absolute;
+      top: -20px;
+      left: 10px;
+      color: #fbc531;
+      font-size: 10px;
+      text-shadow: 1px 1px #000;
+    }
+    #sendBtn {
+      margin: 20px;
+      background: #fbc531;
+      border: none;
+      padding: 12px 24px;
+      font-family: 'Press Start 2P', cursive;
+      font-size: 14px;
+      cursor: pointer;
+      text-shadow: 1px 1px #000;
+    }
+    #logo {
+      position: absolute;
+      bottom: 10px;
+      right: 10px;
+      width: 120px;
+      filter: drop-shadow(2px 2px 2px #000);
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Monte sua Operação Ideal</h1>
+    <p>Arraste os blocos para os slots na ordem de prioridade</p>
+  </header>
+
+  <div class="play-area">
+    <div class="blocos" id="blocos">
+      <div class="bloco" draggable="true" data-name="SEO"><img src="seo.png" alt="SEO"></div>
+      <div class="bloco" draggable="true" data-name="Product Ads"><img src="ads.png" alt="ADS"></div>
+      <div class="bloco" draggable="true" data-name="Planejamento"><img src="planejamento.png" alt="Planejamento"></div>
+      <div class="bloco" draggable="true" data-name="Minha Página"><img src="minha-pagina.png" alt="Minha Página"></div>
+      <div class="bloco" draggable="true" data-name="Atendimento"><img src="atendimento.png" alt="Atendimento"></div>
+      <div class="bloco" draggable="true" data-name="Clips"><img src="clips.png" alt="Clips"></div>
+    </div>
+
+    <div class="slots" id="slots">
+      <div class="slot" data-index="1"></div>
+      <div class="slot" data-index="2"></div>
+      <div class="slot" data-index="3"></div>
+      <div class="slot" data-index="4"></div>
+      <div class="slot" data-index="5"></div>
+      <div class="slot" data-index="6"></div>
+    </div>
+
+    <button id="sendBtn">Enviar via WhatsApp</button>
+  </div>
+
+  <div id="ground"></div>
+  <img id="logo" src="Logo.png" alt="Meta Click Logo">
+
+  <script>
+    const blocos = document.querySelectorAll('.bloco');
+    const slots = document.querySelectorAll('.slot');
+    const result = Array(slots.length).fill('');
+    let draggingName = null;
+
+    blocos.forEach(bloco => {
+      bloco.addEventListener('dragstart', e => {
+        draggingName = e.target.dataset.name;
+      });
+    });
+
+    slots.forEach(slot => {
+      slot.addEventListener('dragover', e => e.preventDefault());
+      slot.addEventListener('drop', e => {
+        e.preventDefault();
+        const idx = parseInt(slot.dataset.index) - 1;
+        if (!slot.classList.contains('filled')) {
+          slot.classList.add('filled');
+          slot.innerHTML = `<img src="${draggingName.toLowerCase().replace(/ /g,'-')}.png" alt="${draggingName}" style="max-width:64px;max-height:64px;">`;
+          result[idx] = draggingName;
+        }
+      });
+    });
+
+    document.getElementById('sendBtn').addEventListener('click', () => {
+      const chosen = result.filter(Boolean);
+      if (chosen.length < 1) return alert('Selecione ao menos um bloco.');
+      let msg = 'Minha operação ideal é:%0A';
+      chosen.forEach((name, i) => {
+        msg += `${i+1}º ${name}%0A`;
+      });
+      const phone = '5516992203476';
+      const url = `https://api.whatsapp.com/send?phone=${phone}&text=${msg}`;
+      window.open(url, '_blank');
+    });
+  </script>
+</body>
+</html>
