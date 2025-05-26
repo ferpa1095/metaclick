@@ -2,7 +2,7 @@
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <title>Monte sua Operação Ideal - Meta Click</title>
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
@@ -10,42 +10,127 @@
     body {
       background: #70c5ce url('clouds.png') repeat-x bottom;
       font-family: 'Press Start 2P', cursive;
-      overflow: hidden;
-      height: 100vh;
       display: flex;
       flex-direction: column;
       align-items: center;
-      justify-content: space-between;
+      min-height: 100vh;
+      overflow-x: hidden;
     }
-    #ground { position: absolute; bottom: 0; left: 0; width: 100%; height: 80px; background: url('ground.png') repeat-x; }
-    header { margin-top: 20px; text-align: center; color: #fff; text-shadow: 2px 2px #000; }
-    header h1 { font-size: 24px; }
-    .play-area { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 20px; }
-    .blocos, .slots { display: flex; gap: 15px; }
-    .bloco, .slot { width: 80px; height: 80px; border: 2px dashed #555; display: flex; align-items: center; justify-content: center; cursor: grab; position: relative; }
-    .bloco img { max-width: 64px; max-height: 64px; }
-    .slot.filled { border: 2px solid #fbc531; }
-    .slot::after { content: attr(data-index) 'º'; position: absolute; top: -20px; left: 10px; color: #fbc531; font-size: 10px; text-shadow: 1px 1px #000; }
-    #sendBtn { margin: 20px; background: #fbc531; border: none; padding: 12px 24px; font-family: 'Press Start 2P', cursive; font-size: 14px; cursor: pointer; text-shadow: 1px 1px #000; }
-    #logo { position: absolute; bottom: 80px; right: 10px; width: 120px; filter: drop-shadow(2px 2px 2px #000); }
+    #ground {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      height: 100px;
+      background: url('ground.png') repeat-x;
+      background-size: auto 100px;
+      z-index: 1;
+    }
+    header {
+      margin: 10px;
+      text-align: center;
+      color: #fff;
+      text-shadow: 2px 2px #000;
+      z-index: 2;
+    }
+    header h1 {
+      font-size: 2.4vw;
+      max-font-size: 20px;
+    }
+    header p {
+      font-size: 1.6vw;
+      max-font-size: 14px;
+    }
+    .play-area {
+      flex: 1;
+      width: 100%;
+      max-width: 480px;
+      padding: 10px;
+      z-index: 2;
+      overflow-y: auto;
+    }
+    .blocos, .slots {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 8px;
+      margin-bottom: 12px;
+    }
+    .bloco, .slot {
+      width: 18vw;
+      height: 18vw;
+      max-width: 70px;
+      max-height: 70px;
+      background: #2b2b2b;
+      border: 2px dashed #555;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      touch-action: none;
+    }
+    .bloco img, .slot img {
+      width: 80%;
+      height: 80%;
+      pointer-events: none;
+    }
+    .slot.filled {
+      border-color: #fbc531;
+      background: #444;
+    }
+    .slot::after {
+      content: attr(data-index) 'º';
+      position: absolute;
+      top: -14px;
+      left: 6px;
+      color: #fbc531;
+      font-size: 10px;
+      text-shadow: 1px 1px #000;
+    }
+    #sendBtn {
+      background: #fbc531;
+      border: none;
+      padding: 10px 20px;
+      font-family: 'Press Start 2P', cursive;
+      font-size: 4vw;
+      max-font-size: 14px;
+      color: #000;
+      text-shadow: 1px 1px #000;
+      cursor: pointer;
+      margin: 10px;
+      z-index: 2;
+    }
+    #logo {
+      position: fixed;
+      bottom: 10px;
+      right: 10px;
+      width: 20vw;
+      max-width: 80px;
+      filter: drop-shadow(2px 2px 2px #000);
+      z-index: 2;
+    }
+    @media (min-width: 480px) {
+      header h1 { font-size: 20px; }
+      header p { font-size: 14px; }
+      #sendBtn { font-size: 12px; }
+    }
   </style>
 </head>
 <body>
   <header>
-    <h1>Quais pontos são mais importantes para a sua loja?</h1></br>
-    <p>Arraste os blocos para os slots na ordem de prioridade</p>
+    <h1>Monte sua Operação Ideal</h1>
+    <p>Arraste ou toque e segure os blocos para os slots</p>
   </header>
 
   <div class="play-area">
     <div class="blocos" id="blocos">
-      <div class="bloco" draggable="true" data-name="SEO"><img src="seo.png" alt="SEO"></div>
-      <div class="bloco" draggable="true" data-name="Product Ads"><img src="ads.png" alt="ADS"></div>
-      <div class="bloco" draggable="true" data-name="Planejamento"><img src="planejamento.png" alt="Planejamento"></div>
-      <div class="bloco" draggable="true" data-name="Minha Página"><img src="minha-pagina.png" alt="Minha Página"></div>
-      <div class="bloco" draggable="true" data-name="Atendimento"><img src="atendimento.png" alt="Atendimento"></div>
-      <div class="bloco" draggable="true" data-name="Clips"><img src="clips.png" alt="Clips"></div>
+      <div class="bloco" data-name="SEO"><img src="seo.png" alt="SEO"></div>
+      <div class="bloco" data-name="Product Ads"><img src="ads.png" alt="ADS"></div>
+      <div class="bloco" data-name="Planejamento"><img src="planejamento.png" alt="Planejamento"></div>
+      <div class="bloco" data-name="Minha Página"><img src="minha-pagina.png" alt="Minha Página"></div>
+      <div class="bloco" data-name="Atendimento"><img src="atendimento.png" alt="Atendimento"></div>
+      <div class="bloco" data-name="Clips"><img src="clips.png" alt="Clips"></div>
     </div>
-
     <div class="slots" id="slots">
       <div class="slot" data-index="1"></div>
       <div class="slot" data-index="2"></div>
@@ -54,52 +139,70 @@
       <div class="slot" data-index="5"></div>
       <div class="slot" data-index="6"></div>
     </div>
-
     <button id="sendBtn">Enviar via WhatsApp</button>
   </div>
 
   <div id="ground"></div>
-  <img id="logo" src="logo.png" alt="Meta Click Logo">
+  <img id="logo" src="Logo.png" alt="Meta Click Logo">
 
   <script>
-    let draggingName = null, draggedEl = null;
-    const blocos = document.querySelectorAll('.bloco');
+    let draggingEl = null;
+    const result = Array(6).fill('');
+    const blocs = document.querySelectorAll('.bloco');
     const slots = document.querySelectorAll('.slot');
-    const result = Array(slots.length).fill('');
 
-    blocos.forEach(bloco => {
-      bloco.addEventListener('dragstart', e => {
-        draggingName = bloco.dataset.name;
-        draggedEl = bloco;
-      });
+    blocs.forEach(bloco => {
+      bloco.addEventListener('touchstart', startTouch);
+      bloco.addEventListener('mousedown', startTouch);
     });
+    function startTouch(e) {
+      draggingEl = e.currentTarget;
+      draggingEl.style.opacity = '0.6';
+    }
 
-    slots.forEach(slot => {
-      slot.addEventListener('dragover', e => e.preventDefault());
-      slot.addEventListener('drop', e => {
-        e.preventDefault();
-        const idx = parseInt(slot.dataset.index) - 1;
-        if (!slot.classList.contains('filled') && draggedEl) {
+    document.addEventListener('touchmove', moveTouch, { passive: false });
+    document.addEventListener('mousemove', moveTouch);
+    function moveTouch(e) {
+      if (!draggingEl) return;
+      e.preventDefault();
+      const touch = e.touches ? e.touches[0] : e;
+      const area = document.querySelector('.play-area');
+      const rectArea = area.getBoundingClientRect();
+      let x = touch.clientX - rectArea.left - draggingEl.offsetWidth/2;
+      let y = touch.clientY - rectArea.top - draggingEl.offsetHeight/2;
+      draggingEl.style.position = 'absolute';
+      draggingEl.style.left = Math.min(Math.max(x, 0), rectArea.width - draggingEl.offsetWidth) + 'px';
+      draggingEl.style.top = Math.min(Math.max(y, 0), rectArea.height - draggingEl.offsetHeight) + 'px';
+    }
+
+    document.addEventListener('touchend', endTouch);
+    document.addEventListener('mouseup', endTouch);
+    function endTouch() {
+      if (!draggingEl) return;
+      const rectEl = draggingEl.getBoundingClientRect();
+      slots.forEach((slot, i) => {
+        const rect = slot.getBoundingClientRect();
+        if (!slot.classList.contains('filled') &&
+            rectEl.left > rect.left && rectEl.left < rect.right &&
+            rectEl.top > rect.top && rectEl.top < rect.bottom) {
           slot.classList.add('filled');
-          // Move element into slot
-          draggedEl.style.cursor = 'default';
-          draggedEl.setAttribute('draggable', 'false');
-          slot.appendChild(draggedEl);
-          result[idx] = draggingName;
-          draggingName = null;
-          draggedEl = null;
+          slot.appendChild(draggingEl);
+          draggingEl.style.position = 'static';
+          draggingEl.style.opacity = '1';
+          result[i] = draggingEl.dataset.name;
         }
       });
-    });
+      draggingEl.style.position = '';
+      draggingEl.style.opacity = '1';
+      draggingEl = null;
+    }
 
     document.getElementById('sendBtn').addEventListener('click', () => {
-      const chosen = result.filter(Boolean);
+      const chosen = result.filter(r => r);
       if (!chosen.length) return alert('Selecione ao menos um bloco.');
-      let msg = 'Minha ordem de prioridade é:%0A';
-      chosen.forEach((name, i) => { msg += `${i+1}º ${name}%0A`; });
-      const phone = '5516992203476';
-      const url = `https://api.whatsapp.com/send?phone=${phone}&text=${msg}`;
-      window.open(url, '_blank');
+      let msg = 'Minha operação ideal é:%0A';
+      chosen.forEach((name, i) => msg += `${i+1}º ${name}%0A`);
+      window.open(`https://api.whatsapp.com/send?phone=5516992203476&text=${msg}`, '_blank');
     });
   </script>
 </body>
